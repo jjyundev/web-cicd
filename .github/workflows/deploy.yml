@@ -35,6 +35,8 @@ jobs:
         key: ${{ secrets.NCP_SERVER_KEY }}
         port: 22
         script: |
+          echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
+
           if ! type docker > /dev/null 2>&1; then
             echo "Docker가 없네요! 설치를 시작합니다..."
             sudo apt-get update -y
@@ -42,8 +44,6 @@ jobs:
             sudo systemctl start docker
             sudo systemctl enable docker
             echo "Docker 설치 완료!"
-          else
-            echo "Docker가 이미 설치되어 있습니다."
           fi
 
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
