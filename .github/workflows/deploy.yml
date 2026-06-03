@@ -26,3 +26,28 @@ jobs:
         tags: |
           ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
           ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:${{ github.sha }}
+
+    - name: Deploy on NCP Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.NCP_SERVER_IP }}
+        username: ${{ secrets.NCP_SERVER_USER }}
+        key: ${{ secrets.NCP_SERVER_KEY }}
+        port: 22
+        script: |
+          if ! type docker > /dev/null 2>&1; then
+            echo "Docker가 없네요! 설치를 시작합니다..."
+            sudo apt-get update -y
+            sudo apt-get install -y docker.io
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            echo "Docker 설치 완료!"
+          else
+            echo "Docker가 이미 설치되어 있습니다."
+          fi
+
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
+          docker stop nodejs-container || true
+          docker rm nodejs-container || true
+          docker run -d --name nodejs-container -p 80:3000 ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
+          docker image prune -f
