@@ -29,11 +29,15 @@ jobs:
 
     - name: Deploy on NCP Server
       uses: appleboy/ssh-action@master
+      env:
+        DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
       with:
         host: ${{ secrets.NCP_SERVER_IP }}
         username: ${{ secrets.NCP_SERVER_USER }}
         key: ${{ secrets.NCP_SERVER_KEY }}
         port: 22
+        envs: DOCKERHUB_USER,DOCKERHUB_PASS
         script: |
           echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
 
@@ -46,6 +50,8 @@ jobs:
             echo "Docker 설치 완료!"
           fi
 
+          echo "$DOCKERHUB_PASS" | sudo docker login -u "$DOCKERHUB_USER" --password-stdin
+          
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
           docker stop nodejs-container || true
           docker rm nodejs-container || true
