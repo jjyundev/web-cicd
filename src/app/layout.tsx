@@ -1,16 +1,24 @@
-export const metadata = {
-  title: 'My Next.js Project',
-  description: '기존 프로젝트에 Next.js 추가하기',
-}
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "jjyundev Portfolio",
+  description: "개발자 포트폴리오입니다.",
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="ko">
-      <body>{children}</body>
+    <html lang="ko" className="scroll-smooth">
+      <body className={`${inter.className} bg-[#f9f9f9] text-[#1a1a1a] antialiased`}>
+        {children}
+      </body>
     </html>
-  )
+  );
 }
