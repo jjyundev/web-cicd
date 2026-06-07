@@ -2,7 +2,7 @@ name: Docker to Docker Hub
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "style" ]
 
 jobs:
   build-and-push:
@@ -23,7 +23,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/web-cicd:latest
 
     - name: Deploy on NCP Server
       uses: appleboy/ssh-action@v1.0.3
@@ -40,8 +40,8 @@ jobs:
         script: |
           echo "$DOCKERHUB_PASS" | sudo docker login -u "$DOCKERHUB_USER" --password-stdin
           
-          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
-          sudo docker stop nodejs-container || true
-          sudo docker rm nodejs-container || true
-          sudo docker run -d --name nodejs-container -p 80:3000 ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-app:latest
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/web-cicd:latest
+          sudo docker stop docker-container || true
+          sudo docker rm docker-container || true
+          sudo docker run -d --name docker-container -p 80:3000 ${{ secrets.DOCKERHUB_USERNAME }}/web-cicd:latest
           sudo docker image prune -f
