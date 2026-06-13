@@ -3,17 +3,17 @@ import Image from 'next/image';
 const projects = [
   {
     id: 1,
-    title: "SRE 기반의 클라우드 인프라 및 CI/CD 파이프라인 구축",
-    desc: "NCP와 Docker를 활용하여 배포 과정을 자동화하고, 무중단 배포 및 인프라 모니터링 환경을 구축한 프로젝트",
+    title: "portfolio",
+    desc: "Actions와 Docker를 활용하여 배포 과정을 자동화하고, 무중단 배포 및 인프라 모니터링 환경을 구축한 프로젝트",
     skills: ["Linux", "Next.js", "Tailwind CSS", "Docker", "GitHub Actions", "NCP"],
-    goal: "CI/CD 자동화 인프라 구축을 통한 배포 리드타임 단축 및 SRE 핵심 메커니즘 구조적 이해",
+    goal: "SRE 기반의 CI/CD 자동화 파이프라인 구축을 통한 배포 리드타임 단축 및 안정성 유지",
     result: "-",
     progress: [
       { phase: "기획/설계", value: 70 },
       { phase: "개발 완료", value: 40 },
       { phase: "최적화 및 QA", value: 0 }
     ],
-    link: "https://github.com/jjyundev/web-cicd"
+    link: "https://github.com/jjyundev/portfolio"
   },
   {
     id: 2,
