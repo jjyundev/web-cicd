@@ -38,10 +38,6 @@ jobs:
         port: 22
         envs: DOCKERHUB_USER,DOCKERHUB_PASS
         script: |
+          cd /root/nextjs-deploy
           echo "$DOCKERHUB_PASS" | sudo docker login -u "$DOCKERHUB_USER" --password-stdin
-          
-          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-web:latest
-          sudo docker stop docker-container || true
-          sudo docker rm docker-container || true
-          sudo docker run -d --name docker-container -p 80:3000 ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-web:latest
-          sudo docker image prune -f
+          ./deploy.sh
